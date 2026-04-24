@@ -1,27 +1,28 @@
-// import { ref , effect } from "./node_modules/@vue/reactivity/dist/reactivity.esm-browser.js";
+import { effect , reactive } from './core/index.js'
 
-// const a = ref(5);
-// let b = 0
+const App = {
+  render(context) {
+    effect(() => {
+      document.querySelector('#App').textContent = ''
+      const element = document.createElement('div')
+      const text = document.createTextNode('nihao')
+      const text1 = document.createTextNode(context.obj.count)
+      element.append(text)
+      element.append(text1)
+      document.querySelector('#App').append(element)
+    })
+  },
 
-// effect(() => {
-//   // 收集依赖
-//   b = a.value + 10;
-//   console.log(b);
-// })
+  setup() {
+    const obj = reactive({
+      count: 1
+    })
 
-// a.value = 10; // 触发依赖更新
+    window.obj = obj
+    return {
+      obj
+    }
+  }
+}
 
-import { Dep , effect ,reactive } from './core/index.js'
-
-const a = reactive({
-  age: 10
-})
-
-let b = 0
-
-effect(() => {
-  b = a.age + 1
-  console.log(b)
-})
-
-a.age = 20
+App.render(App.setup())
