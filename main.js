@@ -11,14 +11,17 @@
 
 // a.value = 10; // 触发依赖更新
 
-import { Dep , effect } from './core/index.js'
+import { Dep , effect ,reactive } from './core/index.js'
 
-const a = new Dep(5)
+const a = reactive({
+  age: 10
+})
+
 let b = 0
 
 effect(() => {
-  b = a.value + 10
+  b = a.age + 1
   console.log(b)
 })
 
-a.value = 20
+a.age = 20
