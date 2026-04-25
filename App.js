@@ -7,15 +7,27 @@ export default {
     // const text1 = document.createTextNode(context.obj.count)
     // element.append(text)
     // element.append(text1)
-    return h("div" , {} , [
-      h("p" , {} , "nihao") , 
-      h("p" , {} , String(context.obj.count))
-    ])
+    return h(context.obj.tag , context.obj.props , context.obj.Children)
   },
 
   setup() {
     const obj = reactive({
-      count: 1
+      count: 1,
+      tag: "div",
+      props: {
+        a:10,
+        b:20
+      },
+      Children: [{
+        tag:"div",
+        props: {},
+        children: '333'
+      },
+      {
+        tag:"div",
+        props: {},
+        children: '444'
+      }]
     })
 
     window.obj = obj
