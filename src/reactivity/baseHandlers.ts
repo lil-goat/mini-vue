@@ -1,20 +1,25 @@
 import { track , trigger } from "./effec"
 import { reactive, ReactiveFlags, readonly } from "./reactive"
-import { isObject } from "../shared/inedx"
+import { extned, isObject } from "../shared/inedx"
 
 const get = createGetter()
 const set = createSetter()
 const readonlyGet = createGetter(true)
-const readonlySet = (target , key , ...rest) => console.warn(`key:${key}修改失败，因为target是readonly`,target)
+const readonlySet = (target , key , ...rest) => {
+  console.warn(`key:${key}修改失败，因为target是readonly`,target)
+  return true
+}
 
-function createGetter(isReadOnly = false) {
+const shallowReadonyGet = createGetter(true , true)
+
+function createGetter(isReadOnly = false , shallow = false) {
   return function (target , key) {
     if(key === ReactiveFlags.IS_REACTIVE) return !isReadOnly
     else if(key === ReactiveFlags.IS_READONLY) return isReadOnly
     
     const res = Reflect.get(target , key)
     
-    if(isObject(res)) return isReadOnly ? readonly(res) : reactive(res)
+    if(!shallow && isObject(res)) return isReadOnly ? readonly(res) : reactive(res)
 
     if(!isReadOnly) {   
       track(target , key)   
@@ -42,3 +47,7 @@ export const readOnlyHandlers = {
   get: readonlyGet,
   set: readonlySet
 }
+
+export const shallowReadonlyHandlers = extned({} , readOnlyHandlers , {
+  get: shallowReadonyGet
+})

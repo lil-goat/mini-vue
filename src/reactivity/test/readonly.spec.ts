@@ -14,14 +14,15 @@ describe("readonly" , () => {
   })
 
   it("warn when call set" , () => {
-    const user = {
+    const user = readonly({
       age: 20
-    }
+    })
 
     console.warn = jest.fn()
 
     user.age = 10
 
-    expect(user.age).toBe(10)
+    expect(user.age).toBe(20)
+    expect(console.warn).toHaveBeenCalledTimes(1)
   })
 })
