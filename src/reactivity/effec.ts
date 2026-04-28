@@ -6,8 +6,9 @@ class ReactiveEffect {
 
   run() {
     activeEffect = this
-    this._fn()
+    const result = this._fn()
     activeEffect = null
+    return result
   }
 }
 
@@ -41,6 +42,7 @@ export function effect(fn) {
   // fn
   const _effect = new ReactiveEffect(fn)
   _effect.run()
+  return _effect.run.bind(_effect)
 }
 
 export function trigger(target , key) {
