@@ -1,4 +1,4 @@
-import { add } from "../src/reactivity"
+import { add } from "../index.ts"
 
 it("init" , () => {
   expect(true).toBe(true)
