@@ -53,7 +53,7 @@ function findDep(target , key) {
 
 export function track(target , key) {
   const Dep = findDep(target , key)
-  if(activeEffect) {
+  if(activeEffect && activeEffect.active) {
     Dep.add(activeEffect)
     activeEffect.deps.push(Dep)
   }
