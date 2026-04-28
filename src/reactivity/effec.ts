@@ -1,6 +1,10 @@
+import { extned } from "../shared/inedx"
+
 class ReactiveEffect {
   private _fn
-  private _scheduler
+  deps = []
+  active = true
+  onStop?: () => void
   constructor (fn , public scheduler?) {
     this._fn = fn
   }
@@ -11,6 +15,22 @@ class ReactiveEffect {
     activeEffect = null
     return result
   }
+
+  stop() {
+    if(this.active) {
+      cleanUpEffect(this)
+    }
+    if(this.onStop) {
+      this.onStop()
+    }
+    this.active = false
+  }
+}
+
+function cleanUpEffect(effect) {
+  effect.deps.forEach((dep: any) => {
+    dep.delete(effect)
+  });
 }
 
 const targetMap = new WeakMap()
@@ -33,7 +53,10 @@ function findDep(target , key) {
 
 export function track(target , key) {
   const Dep = findDep(target , key)
-  Dep.add(activeEffect)
+  if(activeEffect) {
+    Dep.add(activeEffect)
+    activeEffect.deps.push(Dep)
+  }
   return Dep
 }
 
@@ -43,7 +66,12 @@ export function effect(fn , options: any = {}) {
   // fn
   const _effect = new ReactiveEffect(fn , options.scheduler)
   _effect.run()
-  return _effect.run.bind(_effect)
+  // extned options
+  extned(_effect , options)
+  
+  const runner: any = _effect.run.bind(_effect)
+  runner.effect = _effect
+  return runner
 }
 
 export function trigger(target , key) {
@@ -53,4 +81,8 @@ export function trigger(target , key) {
       effect.scheduler()
     } else effect.run()
   });
+}
+
+export function stop(runner) {
+  runner.effect.stop()
 }

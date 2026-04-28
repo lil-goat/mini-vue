@@ -1,5 +1,5 @@
 import { reactive } from '../reactive.ts'
-import { effect } from '../effec.ts'
+import { effect , stop} from '../effec.ts'
  
 describe("effect" , () => {
   it("happy path" , () => {
@@ -57,5 +57,38 @@ describe("effect" , () => {
     runner()
     // should have run
     expect(dummy).toBe(10)
+  })
+
+  it("stop" , () => {
+    let dummy
+    const obj = reactive({ prop: 1 })
+    const runner = effect(() => {
+      dummy = obj.prop
+    })
+    expect(dummy).toBe(1)
+    stop(runner)
+    obj.prop ++
+    expect(dummy).toBe(1)
+
+    // stopped effect should still be manually callable
+    runner()
+    expect(dummy).toBe(2)
+  })
+
+  it("onStop" , () => {
+    let dummy
+    const obj = reactive({ prop: 1 })
+    const onStop = jest.fn()
+    const runner = effect(
+      () => {
+        dummy = obj.prop
+      },
+      {
+        onStop
+      }
+    )
+
+    stop(runner)
+    expect(onStop).toHaveBeenCalledTimes(1)
   })
 })

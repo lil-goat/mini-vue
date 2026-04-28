@@ -1,0 +1,1 @@
+export const extned = Object.assign
