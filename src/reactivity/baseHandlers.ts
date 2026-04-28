@@ -1,4 +1,5 @@
 import { track , trigger } from "./effec"
+import { ReactiveFlags } from "./reactive"
 
 const get = createGetter()
 const set = createSetter()
@@ -8,7 +9,9 @@ const readonlySet = (target , key , ...rest) => console.warn(`key:${key}修改�
 function createGetter(isReadOnly = false) {
   return function (target , key) {
     const res = Reflect.get(target , key)
-
+    
+    if(key === ReactiveFlags.IS_REACTIVE) return !isReadOnly
+    else if(key === ReactiveFlags.IS_READONLY) return isReadOnly
     if(!isReadOnly) {   
       track(target , key)   
     }
