@@ -1,6 +1,6 @@
 import { effect } from "../effec"
 import { reactive } from "../reactive"
-import { isRef, ref , unRef } from "../ref"
+import { isRef, proxyRef, ref , unRef } from "../ref"
 
 describe("ref" , () => {
   it("happy path" , () => {
@@ -54,5 +54,28 @@ describe("ref" , () => {
     const a = ref(1)
     expect(unRef(a)).toBe(1)
     expect(unRef(1)).toBe(1)
+  })
+
+  it("proxyRef" , () => {
+    const user = {
+      age: ref(18),
+      name: 'lilgoat'
+    }
+
+    // template
+    // vue3
+    // setup() { return {ref} } 
+    const proxyUser = proxyRef(user)
+    expect(user.age.value).toBe(18)
+    expect(proxyUser.age).toBe(18)
+    expect(proxyUser.name).toBe("lilgoat")
+
+    proxyUser.age = 20
+    expect(proxyUser.age).toBe(20)
+    expect(user.age.value).toBe(20)
+
+    proxyUser.age = ref(10)
+    expect(proxyUser.age).toBe(10)
+    expect(user.age.value).toBe(10)
   })
 })

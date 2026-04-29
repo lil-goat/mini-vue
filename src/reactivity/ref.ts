@@ -41,3 +41,17 @@ export function isRef(ref) {
 export function unRef(ref) {
   return isRef(ref) ? ref.value : ref
 }
+
+export function proxyRef (ref) {
+  return new Proxy(ref , {
+    get(target , key) {
+      // get -> age(ref) 那就返回.value
+      // not ref -> value
+      return unRef(Reflect.get(target , key))
+    } , 
+    set(target , key , value) {
+      if(isRef(target[key]) && !isRef(value)) return target[key].value = value
+      else return Reflect.set(target , key , value)
+    }
+  })
+}
