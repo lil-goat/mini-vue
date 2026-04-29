@@ -53,11 +53,15 @@ function findDep(target , key) {
 
 export function track(target , key) {
   const Dep = findDep(target , key)
+  trackEffects(Dep)
+  return Dep
+}
+
+export function trackEffects(Dep) {
   if(activeEffect && activeEffect.active) {
     Dep.add(activeEffect)
     activeEffect.deps.push(Dep)
   }
-  return Dep
 }
 
 let activeEffect
@@ -76,11 +80,15 @@ export function effect(fn , options: any = {}) {
 
 export function trigger(target , key) {
   const Dep = findDep(target , key)
+  triggerEffects(Dep)
+}
+
+export function triggerEffects (Dep) {
   Dep.forEach(effect => {
     if(effect.scheduler) {
       effect.scheduler()
     } else effect.run()
-  });
+  });  
 }
 
 export function stop(runner) {
