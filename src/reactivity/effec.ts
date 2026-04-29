@@ -1,6 +1,6 @@
 import { extned } from "../shared/inedx"
 
-class ReactiveEffect {
+export class ReactiveEffect {
   private _fn
   deps = []
   active = true
