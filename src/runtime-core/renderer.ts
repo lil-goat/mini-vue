@@ -10,7 +10,8 @@ export function render(vnode , container) {
 
 function patch(vnode , container) {
   // 处理组件
-  // 判断是不是element
+  // TODO 判断是不是element
+  // 是element 那就处理 element
   processComponent(vnode , container)
 }
 
