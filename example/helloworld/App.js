@@ -1,4 +1,5 @@
 import { h } from "../../lib/guide-mini-vue.esm.js"
+import { Foo } from './Foo.js'
 
 window.self = null
 export const App = {
@@ -24,9 +25,14 @@ export const App = {
       // setupState
       // this.$el -> get root element
       // array
-      // [h('p' , {class: 'red'} , 'hi') , h('p' , {class: 'blue'} , 'mini-vue')]
+      [
+        h('p' , {class: 'red'} , 'hi'),
+        h(Foo , {
+          count: 1
+        })
+      ]
       // string
-      'press here'
+      // 'press here'
       // 'hi , ' + this.msg
     )
   },
