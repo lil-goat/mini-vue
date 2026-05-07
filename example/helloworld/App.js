@@ -13,15 +13,21 @@ export const App = {
       'div' ,
       {
         id: "root",
-        class: ['red' , 'hard']
+        class: ['red' , 'hard'],
+        onClick() {
+          console.log('click')
+        },
+        onMousedown() {
+          console.log('onmousedown')
+        }
       },
       // setupState
       // this.$el -> get root element
       // array
       // [h('p' , {class: 'red'} , 'hi') , h('p' , {class: 'blue'} , 'mini-vue')]
       // string
-      // 'hi , mini-vue'
-      'hi , ' + this.msg
+      'press here'
+      // 'hi , ' + this.msg
     )
   },
 
