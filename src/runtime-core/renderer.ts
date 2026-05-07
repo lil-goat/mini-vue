@@ -1,6 +1,7 @@
 import { isObject } from "../shared/inedx"
 import { createComponentInstance } from "./component"
 import { setupComponent } from "./component"
+import { ShapeFlags } from "./ShapeFlags"
 
 export function render(vnode , container) {
   // patch 
@@ -9,10 +10,12 @@ export function render(vnode , container) {
 }
 
 function patch(vnode , container) {
-  if(typeof vnode.type === 'string') {
+  const {shapeFlag} = vnode
+
+  if(shapeFlag & ShapeFlags.ELEMENT) {
     // 处理组件
     processElement(vnode , container)
-  } else if(isObject(vnode.type)) {
+  } else if(shapeFlag & ShapeFlags.STATE_COMPONENT) {
     processComponent(vnode , container)
   }
 }
@@ -25,12 +28,12 @@ function mountElement(vnode , container) {
   const el = (vnode.el = document.createElement(vnode.type))
 
   // string array
-  const {children , props} = vnode
+  const {children , props , shapeFlag} = vnode
   
-  if(typeof children === 'string') {
+  if(shapeFlag & ShapeFlags.TEXT_CHILDREN) {
     // string
     el.textContent = children
-  } else if (Array.isArray(children)) {
+  } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
     // vnode
     children.forEach(v => patch(v , el))
   }
