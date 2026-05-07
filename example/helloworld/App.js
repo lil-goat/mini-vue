@@ -1,11 +1,13 @@
 import { h } from "../../lib/guide-mini-vue.esm.js"
 
+window.self = null
 export const App = {
   // 必须写render
   // vue
   // <template> </template>
   // render
   render() {
+    window.self = this
     // ui
     return h(
       'div' ,
@@ -13,7 +15,13 @@ export const App = {
         id: "root",
         class: ['red' , 'hard']
       },
-      [h('p' , {class: 'red'} , 'hi') , h('p' , {class: 'blue'} , 'mini-vue')]
+      // setupState
+      // this.$el -> get root element
+      // array
+      // [h('p' , {class: 'red'} , 'hi') , h('p' , {class: 'blue'} , 'mini-vue')]
+      // string
+      // 'hi , mini-vue'
+      'hi , ' + this.msg
     )
   },
 
@@ -21,7 +29,7 @@ export const App = {
     // composition api
     
     return {
-      msg: 'mini-vue'
+      msg: 'mini-vuehhh'
     }
   }
 }

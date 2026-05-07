@@ -9,7 +9,7 @@ export function render(vnode , container) {
 }
 
 function patch(vnode , container) {
-  if(vnode.type === 'string') {
+  if(typeof vnode.type === 'string') {
     // 处理组件
     processElement(vnode , container)
   } else if(isObject(vnode.type)) {
@@ -22,7 +22,7 @@ function processElement(vnode , container) {
 } 
 
 function mountElement(vnode , container) {
-  const el = document.createElement(vnode.type)
+  const el = (vnode.el = document.createElement(vnode.type))
 
   // string array
   const {children , props} = vnode
@@ -52,14 +52,18 @@ function mountComponent(vnode , container) {
   const instance = createComponentInstance(vnode)
 
   setupComponent(instance)
-  setupRenderEffect(instance , container)
+  setupRenderEffect(instance , vnode , container)
 }
 
-function setupRenderEffect(instance , container) {
-  const subTree = instance.render()
+function setupRenderEffect(instance , vnode , container) {
+  const {proxy} = instance
+  const subTree = instance.render.call(proxy)
 
   // vnode -> patch
   // vnode -> element -> mountElement
 
   patch(subTree , container)
+
+  // element -> mount
+  vnode.el = subTree.el
 }
