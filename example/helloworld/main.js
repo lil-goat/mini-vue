@@ -1,5 +1,5 @@
 import { createApp } from '../../lib/guide-mini-vue.esm.js'
-import { App } from '../componentEmit/App.js'
+import { App } from '../componentSlot/App.js'
 
 // vue3
 const rootContainer = document.querySelector("#app")

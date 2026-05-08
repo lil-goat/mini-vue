@@ -1,7 +1,8 @@
 import { hasOwn } from "../shared/inedx"
 
 const PublicPropertiesMap = {
-  $el: (i) => i.vnode.el
+  $el: (i) => i.vnode.el,
+  $slots: (i) => i.slots
 }
 
 export const PublicInstanceproxyHandlers = {

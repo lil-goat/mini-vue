@@ -2,6 +2,7 @@ import {PublicInstanceproxyHandlers} from './componentPublicInstance.ts'
 import { initProps } from "./componentProps.ts";
 import { shallowReadonly } from '../reactivity/reactive.ts';
 import { emit  } from './conponentEmit.ts';
+import { initSlots } from './componentSlots.ts';
 
 export function createComponentInstance (vnode) {
   const component = {
@@ -9,7 +10,8 @@ export function createComponentInstance (vnode) {
     type: vnode.type,
     setupState: {},
     props: {},
-    emit: () => {}
+    slots: {},
+    emit: () => {},
   }
 
   component.emit = emit.bind(null , component) as any
@@ -18,9 +20,8 @@ export function createComponentInstance (vnode) {
 }
 
 export function setupComponent(instance) {
-  // TODO
+  initSlots(instance , instance.vnode.children)
   initProps(instance , instance.vnode.props)
-  // initSlots()
   
   setupStatefulComponent(instance)
 }
