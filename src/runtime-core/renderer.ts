@@ -9,7 +9,7 @@ import { Fragment, Text } from "./vnode"
 export function createRenderer(options) {
   const {
     createElement: hostCreateElement, 
-    patchProps: hostPatchProps,
+    patchProp: hostPatchProps,
     insert: hostInsert
   } = options
 
@@ -69,8 +69,35 @@ export function createRenderer(options) {
     console.log('n1' , n1)
     console.log('n2' , n2)
 
-    // props
+    const oldProps = n1.props || EMPTY_OBJECT
+    const newProps = n2.props || EMPTY_OBJECT
+
+    const el = (n2.el = n1.el)
+    patchProps(el , oldProps , newProps)
     // children
+  }
+
+  const EMPTY_OBJECT = {}
+  
+  function patchProps(el , oldProps , newProps){
+    if(oldProps !== newProps){
+      for (const key in newProps) {
+        const prevProp = oldProps[key]
+        const nextProp = newProps[key]
+
+        if(prevProp !== nextProp) {
+          hostPatchProps(el , key , prevProp , nextProp)
+        }
+      }
+
+      if(oldProps !== EMPTY_OBJECT) {
+        for (const key in oldProps) {
+          if(!(key in newProps)) {
+            hostPatchProps(el , key , oldProps[key] , null)
+          }
+        }  
+      }    
+    }
   }
 
   function mountElement(vnode , container , parentComponent) {
@@ -90,7 +117,7 @@ export function createRenderer(options) {
     // props
     for(const key in props) {
       const val = props[key]
-      hostPatchProps(el , key , val)
+      hostPatchProps(el , key , null , val)
     }
 
     hostInsert(el , container)
