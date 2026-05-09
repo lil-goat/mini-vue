@@ -4,6 +4,7 @@ import { shallowReadonly } from '../reactivity/reactive.ts';
 import { emit  } from './conponentEmit.ts';
 import { initSlots } from './componentSlots.ts';
 import { provide } from './apiInject.ts';
+import { proxyRef } from '../reactivity/ref.ts';
 
 export function createComponentInstance (vnode , parent) {
   const component = {
@@ -14,6 +15,7 @@ export function createComponentInstance (vnode , parent) {
     slots: {},
     provides: parent ? parent.provides : {},
     parent,
+    isMounted: false,
     emit: () => {},
   }
 
@@ -54,10 +56,8 @@ function setupStatefulComponent(instance) {
 
 function handleSetupResult(instance , setupResult) {
   // function or object
-  // TODO function
-
   if(typeof setupResult === 'object') {
-    instance.setupState = setupResult
+    instance.setupState = proxyRef(setupResult)
   }
 
   finishComponentSetup(instance)
