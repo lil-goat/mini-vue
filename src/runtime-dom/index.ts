@@ -16,8 +16,8 @@ function patchProp(el , key , preVal , val) {
   }
 }
 
-function insert(el , container) {
-  container.append(el)
+function insert(child , parent , anchor) {
+  parent.insertBefore(child , anchor || null)
 }
 
 function remove(child) {
