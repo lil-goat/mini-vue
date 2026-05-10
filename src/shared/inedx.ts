@@ -15,3 +15,7 @@ export const camelize = (str:String) => {
     return c ? c.toUpperCase() : ''
   })
 }
+
+export function getSequence(arr) {
+  
+}
