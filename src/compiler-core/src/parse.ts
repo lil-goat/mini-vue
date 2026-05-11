@@ -21,10 +21,31 @@ function parseChildren(context) {
     if(/[a-z]/i.test(s[1])) {
       node = parseElement(context)
     }
+  } else {
+    node = parseText(context)
   }
   
   nodes.push(node)
   return nodes
+}
+
+function parseText(context) {
+  const content = parseTextData(context , context.source.length)
+  
+  return {
+    type: NodeTypes.TEXT,
+    content: content
+  }
+}
+
+function parseTextData(context , length) {
+  // 1. 获取content
+  const content = context.source.slice(0 , length)
+
+  // 2. 推进代码
+  advanceBy(context , content.length)
+  
+  return content
 }
 
 function parseElement(context) {
@@ -68,10 +89,9 @@ function parseInterpolation(context) {
   
   const rawContextLength = closeIndex - openDelimiter.length
   
-  const rawContent = context.source.slice(0 , rawContextLength)
+  const rawContent = parseTextData(context , rawContextLength)
   const content = rawContent.trim()
 
-  advanceBy(context , rawContextLength + closeDelimiter.length)
   
   return {
     type: NodeTypes.INTERPOLATION, //'interpolation',
