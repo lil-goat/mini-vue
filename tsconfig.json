@@ -14,7 +14,8 @@
     // For nodejs:
     "lib": [
       "DOM",
-      "es6"
+      "es6",
+      "ES2016"
     ],
     // "types": ["node"],
     // and npm install -D @types/node
