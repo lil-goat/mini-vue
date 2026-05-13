@@ -1,5 +1,5 @@
 import { effect } from "../reactivity/effec"
-import { getSequence, isObject } from "../shared/inedx"
+import { getSequence, isObject } from "../shared"
 import { createComponentInstance } from "./component"
 import { setupComponent } from "./component"
 import { shouldUpdateComponent } from "./componentUpdateUtils"

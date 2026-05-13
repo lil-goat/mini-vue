@@ -67,3 +67,4 @@ export function getSequence(arr: number[]): number[] {
   }
   return result
 }
+export const isString = (value) => typeof value === 'string'

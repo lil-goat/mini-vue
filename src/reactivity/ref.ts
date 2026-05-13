@@ -1,4 +1,4 @@
-import { hasChanged, isObject } from "../shared/inedx"
+import { hasChanged, isObject } from "../shared"
 import { trackEffects, triggerEffects } from "./effec"
 import { reactive } from "./reactive"
 

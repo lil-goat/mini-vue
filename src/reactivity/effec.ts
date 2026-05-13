@@ -1,4 +1,4 @@
-import { extned } from "../shared/inedx"
+import { extned } from "../shared"
 
 export class ReactiveEffect {
   private _fn

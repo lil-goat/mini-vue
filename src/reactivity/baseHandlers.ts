@@ -1,6 +1,6 @@
 import { track , trigger } from "./effec"
 import { reactive, ReactiveFlags, readonly } from "./reactive"
-import { extned, isObject } from "../shared/inedx"
+import { extned, isObject } from "../shared"
 
 const get = createGetter()
 const set = createSetter()
