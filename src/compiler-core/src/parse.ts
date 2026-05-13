@@ -143,7 +143,7 @@ function parseInterpolation(context) {
   return {
     type: NodeTypes.INTERPOLATION, //'interpolation',
     content: {
-      type: NodeTypes.SIMPLE_INTERPOLATION,
+      type: NodeTypes.SIMPLE_EXPRESSION,
       content: content
     }
   }
@@ -155,7 +155,8 @@ function advanceBy(context:any , length:number) {
 
 function createRoot(children) {
   return {
-    children
+    children,
+    type: NodeTypes.ROOT
   }
 }
 
