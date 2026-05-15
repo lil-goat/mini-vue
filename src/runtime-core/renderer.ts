@@ -320,7 +320,7 @@ export function createRenderer(options) {
     instance.update = effect(() => {
       if(!instance.isMounted) {
         const {proxy} = instance
-        const subTree = (instance.subTree = instance.render.call(proxy))
+        const subTree = (instance.subTree = instance.render.call(proxy , proxy))
 
         // vnode -> patch
         // vnode -> element -> mountElement
@@ -339,7 +339,7 @@ export function createRenderer(options) {
           updateComponentPreRender(instance , next)
         }
         const {proxy} = instance
-        const subTree = instance.render.call(proxy)
+        const subTree = instance.render.call(proxy , proxy)
         const prevSubTree = instance.subTree
         instance.subTree = subTree
 
